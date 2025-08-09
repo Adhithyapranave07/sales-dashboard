@@ -90,4 +90,9 @@ const DashboardPage: React.FC = () => {
   );
 };
 
+export const metadata = {
+  title: 'My Awesome Sales Dashboard',
+};
+
+
 export default DashboardPage;

@@ -68,35 +68,46 @@ const SalesChart: React.FC<SalesChartProps> = ({ data, chartType }) => {
             />
           </LineChart>
         );
-      case 'pie':
-        return (
-          <div className="flex justify-center items-center h-full">
-            <PieChart width={400} height={400}>
-              <Pie
-                data={data}
-                dataKey="sales"
-                nameKey="year"
-                cx="50%"
-                cy="50%"
-                outerRadius={150}
-                fill="#8884d8"
-                label
-              >
-                {data.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Legend
-                verticalAlign="bottom"
-                height={36}
-              />
-              <Tooltip formatter={(value) => `$${Number(value).toLocaleString()}`} />
-            </PieChart>
-          </div>
-        );
+      case 'pie': {
+  // Aggregate monthly data into yearly totals
+  const yearlyData = data.reduce((acc, curr) => {
+    const year = curr.year.split(' ')[1]; // Extract year from "Month YYYY"
+    const existingYear = acc.find(item => item.year === year);
+    if (existingYear) {
+      existingYear.sales += curr.sales;
+    } else {
+      acc.push({ year, sales: curr.sales });
+    }
+    return acc;
+  }, [] as { year: string; sales: number }[]);
+
+  return (
+    <div className="flex justify-center items-center h-full">
+      <PieChart width={400} height={400}>
+        <Pie
+          data={yearlyData}
+          dataKey="sales"
+          nameKey="year"
+          cx="50%"
+          cy="50%"
+          outerRadius={150}
+          fill="#8884d8"
+          label
+        >
+          {yearlyData.map((entry, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={COLORS[index % COLORS.length]}
+            />
+          ))}
+        </Pie>
+        <Legend verticalAlign="bottom" height={36} />
+        <Tooltip formatter={(value) => `$${Number(value).toLocaleString()}`} />
+      </PieChart>
+    </div>
+  );
+}
+
       default:
         return null;
     }

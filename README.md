@@ -1,40 +1,98 @@
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📊 Sales Dashboard – Next.js, TypeScript, TailwindCSS, Recharts
 
-## Getting Started
+## 📌 Overview
+The **Sales Dashboard** is a responsive web application built with **Next.js 15**, **TypeScript**, **TailwindCSS**, and **Recharts**.  
+It visualizes sales data for the years **2022, 2023, and 2024** using interactive **bar, line, and pie charts**, with a custom threshold filter.
 
-First, run the development server:
+This project follows the **Atomic Design Principle**, structuring components into **atoms**, **molecules**, and **organisms** for maintainability and scalability.
 
+---
+
+## 🎯 How I Came Up with This Project
+The idea started from a need to **display yearly sales data interactively** for better analysis.  
+I wanted a dashboard that:
+- Was **visually appealing** using charts
+- Allowed **switching between chart types** (bar, line, pie)
+- Had a **custom threshold filter** for focusing on high sales months
+- Followed **modern frontend architecture** (Atomic Design)
+- Could later be **extended with API integration** instead of mock data
+
+Initially, I planned to use **real Kaggle data**, but for simplicity and faster development, I used **mock data** for 2022–2024.
+
+---
+
+## 🚀 Features
+- 📅 **Sales data visualization** for 2022, 2023, 2024
+- 🔄 **Toggle** between Bar, Line, and Pie charts
+- 🎚 **Custom sales threshold filter**
+- 📱 Fully responsive UI with TailwindCSS
+- 🏗 **Atomic Design** component structure
+
+---
+
+## 🛠 Technologies Used
+- **Next.js 15**
+- **React 18**
+- **TypeScript**
+- **TailwindCSS**
+- **Recharts**
+
+---
+
+## 📂 Project Structure (Atomic Design)
+components/
+atoms/
+InputAtom.tsx
+ButtonAtom.tsx
+molecules/
+SalesChart.tsx
+organisms/
+DashboardChart.tsx
+data/
+salesData.ts
+pages/
+dashboard.tsx
+
+yaml
+Copy
+Edit
+
+---
+
+## ⚙️ Setup Instructions
+
+1️⃣ **Clone the Repository**
 ```bash
+git clone https://github.com/Adhithyapranave07/sales-dashboard.git
+cd sales-dashboard
+2️⃣ Install Dependencies
+
+bash
+Copy
+Edit
+npm install
+3️⃣ Run Development Server
+
+bash
+Copy
+Edit
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+4️⃣ View the Dashboard
+Open your browser and go to:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+bash
+Copy
+Edit
+http://localhost:3000/dashboard
+📈 Next Steps / Possible Enhancements
+🔗 Integrate real sales data via API
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+🔒 Add user authentication
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🎨 Improve styling & animations
 
-## Learn More
+📊 Add more filtering options
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-=======
-# sales-dashboard
->>>>>>> cd2c54f3181253084b6e2675b5478cf071d87da0
+🏆 Author
+Adhithya Pranave
+💼 GitHub: @Adhithyapranave07

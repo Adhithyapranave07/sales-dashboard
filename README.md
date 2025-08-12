@@ -70,6 +70,7 @@ dashboard.tsx
 1️⃣ **Clone the Repository**
 
 git clone https://github.com/Adhithyapranave07/sales-dashboard.git
+
 cd sales-dashboard
 2️⃣ Install Dependencies
 
@@ -96,8 +97,8 @@ To deploy your own version:
 4. Deploy and get your live link.
 
 ## 📸 Screenshots
-![Dashboard View](./public/screenshots/dashboard-view.png)
-![Pie Chart Example](./public/screenshots/pie-chart.png)
+![Dashboard View](.DashBoard.png)
+![Pie Chart Example](.Line.png)
 
 *(Screenshots taken from local dev build)*
 

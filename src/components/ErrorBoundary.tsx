@@ -14,11 +14,9 @@ export default class ErrorBoundary extends React.Component<Props, State> {
     return { hasError: true, error };
   }
 
-  componentDidCatch(error: Error, info: any) {
-    // TODO: send to logging service (Sentry / LogRocket)
-    // console.error("ErrorBoundary caught:", error, info);
-  }
-
+componentDidCatch(error: unknown, _info: unknown) {
+  console.error(error);
+}
   render() {
     if (this.state.hasError) {
       return (

@@ -97,7 +97,9 @@ To deploy your own version:
 4. Deploy and get your live link.
 
 ## 📸 Screenshots
+DashBoard : 
 ![Dashboard View](DashBoard.png)
+Line Graph
 ![Pie Chart Example](Line.png)
 
 *(Screenshots taken from local dev build)*

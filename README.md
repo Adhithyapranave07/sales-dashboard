@@ -98,7 +98,7 @@ To deploy your own version:
 
 ## 📸 Screenshots
 DashBoard : 
-![Dashboard View](DashBoard.png)
+![Dashboard View](DashBoard)
 Line Graph
 ![Pie Chart Example](Line.png)
 

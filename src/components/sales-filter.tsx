@@ -1,35 +1,56 @@
-import React from 'react';
+// src/components/SalesFilter.tsx
+import React from "react";
 
-interface SalesFilterProps {
-  salesThreshold: number | '';
-  setSalesThreshold: (value: number | '') => void;
-}
+type Props = {
+  salesThreshold: number | "";
+  setSalesThreshold: (v: number | "") => void;
+  onReset?: () => void;
+};
 
-const SalesFilter: React.FC<SalesFilterProps> = ({
+export default function SalesFilter({
   salesThreshold,
   setSalesThreshold,
-}) => {
+  onReset,
+}: Props) {
   return (
-    <div className="flex flex-col md:flex-row items-center gap-2">
-      <label htmlFor="sales-threshold" className="text-gray-700 font-medium">
-        Sales Threshold:
+    <div className="flex flex-col md:flex-row items-center gap-3">
+      <label htmlFor="sales-threshold" className="text-sm font-medium">
+        Sales Threshold
       </label>
       <input
         id="sales-threshold"
-        type="number"
-        value={salesThreshold}
+        inputMode="numeric"
+        aria-label="Sales threshold"
+        placeholder="e.g. 100000"
+        value={salesThreshold === "" ? "" : String(salesThreshold)}
         onChange={(e) => {
-          const value = e.target.value;
-          setSalesThreshold(value === '' ? '' : Number(value));
+          const raw = e.target.value.trim();
+          if (raw === "") {
+            setSalesThreshold("");
+            return;
+          }
+          const cleaned = raw.replace(/[,\s]/g, "");
+          const n = Number(cleaned);
+          if (Number.isFinite(n) && !Number.isNaN(n)) setSalesThreshold(n);
+          else setSalesThreshold("");
         }}
-        placeholder="e.g., 100000"
-        className="
-          p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2
-          focus:ring-primary-500 focus:border-transparent transition-colors duration-200
-        "
+        onKeyDown={(e) => {
+          if (e.key === "Escape") {
+            setSalesThreshold("");
+            onReset?.();
+          }
+        }}
+        className="px-3 py-2 border rounded-md focus:ring-2 focus:ring-sky-500"
       />
+      <button
+        className="px-3 py-2 bg-gray-100 rounded-md hover:bg-gray-200"
+        onClick={() => {
+          setSalesThreshold("");
+          onReset?.();
+        }}
+      >
+        Reset
+      </button>
     </div>
   );
-};
-
-export default SalesFilter;
+}

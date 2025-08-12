@@ -1,94 +1,103 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import SalesChart from '@/src/components/sales-chart';
-import ChartSwitcher from '@/src/components/chart-switcher';
+import React, { useState, useMemo } from "react";
+import dynamic from "next/dynamic";
+import ErrorBoundary from "../components/ErrorBoundary";
+import sampleData from "../data/salesData";
+import ChartSwitcher from "../components/ChartSwitcher";
+import LoadingSpinner from "../components/LoadingSpinner";
 
-// Define the data structure
-interface SalesData {
-  year: string;
-  sales: number;
-}
+const SalesChart = dynamic(() => import("../components/SalesChart"), {
+  ssr: false,
+  loading: () => <LoadingSpinner label="Loading chart..." />,
+});
 
-// Mock sales data for 2022, 2023, and 2024
-const mockSalesData: SalesData[] = [
-  // 2024
-  { year: 'Jan 2024', sales: 12000 },
-  { year: 'Feb 2024', sales: 13500 },
-  { year: 'Mar 2024', sales: 12800 },
-  { year: 'Apr 2024', sales: 14200 },
-  { year: 'May 2024', sales: 15000 },
-  { year: 'Jun 2024', sales: 15500 },
-  { year: 'Jul 2024', sales: 14800 },
-  { year: 'Aug 2024', sales: 16000 },
-  { year: 'Sep 2024', sales: 14500 },
-  { year: 'Oct 2024', sales: 17000 },
-  { year: 'Nov 2024', sales: 17500 },
-  { year: 'Dec 2024', sales: 18000 },
+export default function Page() {
+  const [chartType, setChartType] = useState<"bar" | "line" | "pie">("bar");
+  const [selectedMonth, setSelectedMonth] = useState<string>("");
 
-  // 2023
-  { year: 'Jan 2023', sales: 10000 },
-  { year: 'Feb 2023', sales: 11500 },
-  { year: 'Mar 2023', sales: 10800 },
-  { year: 'Apr 2023', sales: 11200 },
-  { year: 'May 2023', sales: 12000 },
-  { year: 'Jun 2023', sales: 12500 },
-  { year: 'Jul 2023', sales: 11800 },
-  { year: 'Aug 2023', sales: 13000 },
-  { year: 'Sep 2023', sales: 12500 },
-  { year: 'Oct 2023', sales: 14000 },
-  { year: 'Nov 2023', sales: 14500 },
-  { year: 'Dec 2023', sales: 15000 },
+  const months = ["All months", ...sampleData.map((d) => d.month)];
 
-  // 2022
-  { year: 'Jan 2022', sales: 8000 },
-  { year: 'Feb 2022', sales: 9500 },
-  { year: 'Mar 2022', sales: 8800 },
-  { year: 'Apr 2022', sales: 9200 },
-  { year: 'May 2022', sales: 10000 },
-  { year: 'Jun 2022', sales: 10500 },
-  { year: 'Jul 2022', sales: 9800 },
-  { year: 'Aug 2022', sales: 11000 },
-  { year: 'Sep 2022', sales: 10200 },
-  { year: 'Oct 2022', sales: 11800 },
-  { year: 'Nov 2022', sales: 12200 },
-  { year: 'Dec 2022', sales: 12500 },
-];
-
-const DashboardPage: React.FC = () => {
-  const [chartType, setChartType] = useState<'bar' | 'line' | 'pie'>('bar');
+  const chartData = useMemo(() => {
+    if (!selectedMonth || selectedMonth === "All months") {
+      return sampleData.map((d) => ({
+        month: d.month,
+        value: d.sales2024,
+      }));
+    } else {
+      const match = sampleData.find((d) => d.month === selectedMonth);
+      if (!match) return [];
+      return [
+        { month: "2022", value: match.sales2022 },
+        { month: "2023", value: match.sales2023 },
+        { month: "2024", value: match.sales2024 },
+      ];
+    }
+  }, [selectedMonth]);
 
   return (
-    <>
-      {/* Set your own webpage title */}
-      <head>
-        <title>My Awesome Sales Dashboard</title>
-      </head>
+    <ErrorBoundary>
+      <div className="min-h-screen bg-gradient-to-b from-sky-50 via-white to-sky-100">
+        {/* Header */}
+        <header className="bg-gradient-to-r from-sky-600 to-indigo-600 text-white shadow-lg">
+          <div className="max-w-6xl mx-auto px-6 py-5 flex justify-between items-center">
+            <h1 className="text-3xl font-bold tracking-wide">
+              📊 Sales Dashboard
+            </h1>
+          </div>
+        </header>
 
-      <div className="min-h-screen bg-gray-100 p-8">
-        <div className="container mx-auto p-6 bg-white rounded-xl shadow-lg">
-          {/* Dashboard Header */}
-          <h1 className="text-4xl font-bold text-gray-800 mb-6 text-center">
-            Sales Dashboard
-          </h1>
+        {/* Main content */}
+        <main className="max-w-6xl mx-auto px-6 py-10">
+          {/* Controls */}
+          <div className="flex flex-col md:flex-row md:justify-between gap-4 mb-8">
+            <div className="flex items-center gap-4">
+              <label
+                htmlFor="month-select"
+                className="text-lg font-medium text-gray-700"
+              >
+                Select Month:
+              </label>
+              <select
+                id="month-select"
+                value={selectedMonth || "All months"}
+                onChange={(e) => setSelectedMonth(e.target.value)}
+                className="px-4 py-2 rounded-lg border border-gray-300 bg-white shadow-sm focus:ring-2 focus:ring-sky-400 focus:border-sky-400 transition"
+              >
+                {months.map((m) => (
+                  <option key={m} value={m}>
+                    {m}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-          {/* Chart Switcher */}
-          <div className="flex justify-center mb-8">
-            <ChartSwitcher
-              chartType={chartType}
-              setChartType={setChartType}
-            />
+            <ChartSwitcher chartType={chartType} setChartType={setChartType} />
           </div>
 
-          {/* Main Chart */}
-          <div className="w-full h-96">
-            <SalesChart data={mockSalesData} chartType={chartType} />
-          </div>
-        </div>
+          {/* Chart Section */}
+          {chartData.length > 0 ? (
+            <div className="bg-white rounded-2xl shadow-xl p-6 hover:shadow-2xl transition">
+              <SalesChart
+                data={chartData}
+                chartType={chartType}
+                ariaLabel={
+                  selectedMonth && selectedMonth !== "All months"
+                    ? `Sales comparison for ${selectedMonth}`
+                    : `Sales data for 2024`
+                }
+              />
+            </div>
+          ) : (
+            <LoadingSpinner label="Loading chart..." />
+          )}
+        </main>
+
+        {/* Footer */}
+        <footer className="bg-sky-600 text-white text-center py-4 mt-12">
+          © {new Date().getFullYear()} Sales Dashboard
+        </footer>
       </div>
-    </>
+    </ErrorBoundary>
   );
-};
-
- 
-export default DashboardPage;
+}
